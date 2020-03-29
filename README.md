@@ -128,7 +128,7 @@ DMZ = 192.168.200.0/24
 
 | Adresse IP source | Adresse IP destination | Type | Port src | Port dst | Action |  
 | :---:				| :---:					 | :---:| :------: | :------: | :----: |
-| LAN               | Any                    | UDP  | :------: |   53     | ACCEPT |  
+| LAN               | Any                    | UDP  |          |   53     | ACCEPT |  
 | Any               | LAN                    | UDP  |    53    |          | ACCEPT |  
 | LAN               | Any                    | TCP  |    53    |          | ACCEPT |  
 | Any               | LAN                    | TCP  |          |   53     | ACCEPT |  
