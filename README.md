@@ -123,15 +123,33 @@ _Lors de la définition d'une zone, spécifier l'adresse du sous-réseau IP avec
 
 **LIVRABLE : Remplir le tableau**
 
+LAN = 192.168.100.0/24
+DMZ = 192.168.200.0/24
+
 | Adresse IP source | Adresse IP destination | Type | Port src | Port dst | Action |
-| :---:             | :---:                  | :---:| :------: | :------: | :----: |
-|                   |                        |      |          |          |        |
-|                   |                        |      |          |          |        |
-|                   |                        |      |          |          |        |
-|                   |                        |      |          |          |        |
-|                   |                        |      |          |          |        |
-|                   |                        |      |          |          |        |
-|                   |                        |      |          |          |        |
+| LAN               | Any                    | UDP  | :------: |   53     | ACCEPT |
+| Any               | LAN                    | UDP  |    53    |          | ACCEPT |
+| LAN               | Any                    | TCP  |    53    |          | ACCEPT |
+| Any               | LAN                    | TCP  |          |   53     | ACCEPT |
+| LAN               | DMZ                    | ICMP |          |          | ACCEPT |
+| DMZ               | LAN                    | ICMP |          |          | ACCEPT |
+| LAN               | Any                    | ICMP |          |          | ACCEPT |
+| Any               | LAN                    | ICMP |          |          | ACCEPT |
+| LAN				| Any					 | TCP  |  		   |   80	  | ACCEPT |
+| LAN				| Any					 | TCP  |  		   |   8080	  | ACCEPT |
+| Any				| LAN					 | TCP  |  	80	   |   	      | ACCEPT |
+| ANY				| LAN					 | TCP  |  	8080   |     	  | ACCEPT |
+| LAN				| Any					 | TCP  |  		   |   443	  | ACCEPT |
+| Any				| LAN					 | TCP  |  	443	   |    	  | ACCEPT |
+| DMZ				| LAN					 | TCP  |  	80	   |   	      | ACCEPT |
+| LAN				| DMZ					 | TCP  |  	       |    80	  | ACCEPT |
+| DMZ				| Any					 | TCP  |  	80	   |    	  | ACCEPT |
+| Any				| DMZ					 | TCP  |  	       |   80  	  | ACCEPT |
+| LAN				| DMZ					 | TCP  |  		   |   22     | ACCEPT |
+| DMZ				| LAN					 | TCP  |  	22     |     	  | ACCEPT |
+| 192.168.100.2		| LAN					 | TCP  |  		   |   	22    | ACCEPT |
+| LAN				| 192.168.100.2			 | TCP  |  	22     |     	  | ACCEPT |
+| Any				| Any					 | Any  |   Any    |   Any    | DROP   |
 
 ---
 
@@ -227,6 +245,7 @@ ping 192.168.200.3
 ---
 
 **LIVRABLE : capture d'écran de votre tentative de ping.**  
+![](C:\Users\ruifi\OneDrive\Documents\SRX\labo2\Teaching-HEIGVD-SRX-2020-Labo-Firewall\livrable_ping1.PNG)
 
 ---
 
@@ -282,7 +301,7 @@ ping 192.168.100.3
 ---
 
 **LIVRABLE : capture d'écran de votre nouvelle tentative de ping.**
-
+![](C:\Users\ruifi\OneDrive\Documents\SRX\labo2\Teaching-HEIGVD-SRX-2020-Labo-Firewall\livrable_ping2.PNG)
 ---
 
 La communication est maintenant possible entre les deux machines. Pourtant, si vous essayez de communiquer depuis le client ou le serveur vers l'Internet, ça ne devrait pas encore fonctionner sans une manipulation supplémentaire au niveau du firewall. Vous pouvez le vérifier avec un ping depuis le client ou le serveur vers une adresse Internet. 
@@ -296,7 +315,7 @@ ping 8.8.8.8
 ---
 
 **LIVRABLE : capture d'écran de votre ping vers l'Internet.**
-
+![](C:\Users\ruifi\OneDrive\Documents\SRX\labo2\Teaching-HEIGVD-SRX-2020-Labo-Firewall\livrable_ping3.PNG)
 ---
 
 ### Configuration réseau du firewall
@@ -391,6 +410,13 @@ Commandes iptables :
 
 ```bash
 LIVRABLE : Commandes iptables
+iptables -A INPUT -p icmp --icmp-type 8 -m state --state NEW,ESTABLISHED -s 192.168.100.0/24 -d 192.168.200.0/24 -i eth2 -j ACCEPT
+iptables -A OUTPUT -p icmp --icmp-type 0 -m state --state ESTABLISHED -s 192.168.200.0/24 -d 192.168.100.0/24 -o eth2 -j ACCEPT
+iptables -A INPUT -p icmp --icmp-type 8 -m state --state NEW,ESTABLISHED -s 192.168.200.0/24 -d 192.168.100.0/24 -i eth1 -j ACCEPT
+iptables -A OUTPUT -p icmp --icmp-type 0 -m state --state ESTABLISHED -s 192.168.100.0/24 -d 192.168.200.0/24 -o eth1 -j ACCEPT
+iptables -A INPUT -p icmp --icmp-type 8 -m state --state NEW,ESTABLISHED -s 192.168.100.0/24 -i eth0 -j ACCEPT
+iptables -A OUTPUT -p icmp --icmp-type 0 -m state --state NEW,ESTABLISHED -d 192.168.100.0/24 -o eth0 -j ACCEPT
+
 ```
 ---
 
@@ -408,7 +434,7 @@ Faire une capture du ping.
 
 ---
 **LIVRABLE : capture d'écran de votre ping vers l'Internet.**
-
+![](C:\Users\ruifi\OneDrive\Documents\SRX\labo2\Teaching-HEIGVD-SRX-2020-Labo-Firewall\livrable_ping4.PNG)
 ---
 
 <ol type="a" start="3">
@@ -449,7 +475,7 @@ ping www.google.com
 ---
 
 **LIVRABLE : capture d'écran de votre ping.**
-
+![](C:\Users\ruifi\OneDrive\Documents\SRX\labo2\Teaching-HEIGVD-SRX-2020-Labo-Firewall\livrable_ping5.PNG)
 ---
 
 * Créer et appliquer la règle adéquate pour que la **condition 1 du cahier des charges** soit respectée.
@@ -460,6 +486,11 @@ Commandes iptables :
 
 ```bash
 LIVRABLE : Commandes iptables
+iptables -A INPUT -p udp --sport 53 -s 192.168.100.0/24 -i eth0 -j ACCEPT
+iptables -A OUTPUT -p udp --dport 53 -d 192.168.100.0/24 -o eth0 -j ACCEPT
+iptables -A INPUT -p tcp --sport 53 -s 192.168.100.0/24 -i eth0 -j ACCEPT
+iptables -A OUTPUT -p tcp --dport 53 -d 192.168.100.0/24 -o eth0 -j ACCEPT
+
 ```
 
 ---
@@ -472,7 +503,7 @@ LIVRABLE : Commandes iptables
 ---
 
 **LIVRABLE : capture d'écran de votre ping.**
-
+![](C:\Users\ruifi\OneDrive\Documents\SRX\labo2\Teaching-HEIGVD-SRX-2020-Labo-Firewall\livrable_ping6.PNG)
 ---
 
 <ol type="a" start="6">
@@ -484,7 +515,7 @@ LIVRABLE : Commandes iptables
 **Réponse**
 
 **LIVRABLE : Votre réponse ici...**
-
+Avant de sortir le premier résultat la commande ping tourne pendant un petit moment. Il cherche la machine www.google.ch sur le réseau, mais n'ayant pas de DNS à disposition pour traduire l'adresse, il ne trouve rien.
 ---
 
 
@@ -504,6 +535,11 @@ Commandes iptables :
 
 ```bash
 LIVRABLE : Commandes iptables
+iptables -A INPUT -p tcp -m multiport --sport 80,8080 -m state --state ESTABLISHED -s 192.168.100.0/24 -j ACCEPT
+iptables -A OUTPUT -p tcp -m multiport --dport 80,8080 -m state --state NEW,ESTABLISHED -d 192.168.100.0/24 -j ACCEPT
+iptables -A INPUT -p tcp --sport 443 -m state --state ESTABLISHED -s192.168.100.0/24 -j ACCEPT
+iptables -A OUTPUT -p tcp --dport 443 -m state --state NEW,ESTABLISHED -d 192.168.100.0/24 -j ACCEPT
+
 ```
 
 ---
@@ -516,6 +552,11 @@ Commandes iptables :
 
 ```bash
 LIVRABLE : Commandes iptables
+iptables -A INPUT -p tcp --sport 80 -m state --state ESTABLISHED -s 192.168.100.0/24 -d 192.168.200.3 -j ACCEPT
+iptables -A OUTPUT -p tcp --dport 80 -m state --state NEW,ESTABLISHED -s 192.168.200.3 -d 192.168.100.0/24 -j ACCEPT
+iptables -A INPUT -p tcp --sport 80 -m state --state ESTABLISHED -d 192.168.200.3 -j ACCEPT
+iptables -A OUTPUT -p tcp --dport 80 -m state --state NEW,ESTABLISHED -s 192.168.200.3 -j ACCEPT
+
 ```
 ---
 
@@ -527,7 +568,7 @@ LIVRABLE : Commandes iptables
 ---
 
 **LIVRABLE : capture d'écran.**
-
+![](C:\Users\ruifi\OneDrive\Documents\SRX\labo2\Teaching-HEIGVD-SRX-2020-Labo-Firewall\livrable_wget1.PNG)
 ---
 
 
@@ -544,6 +585,11 @@ Commandes iptables :
 
 ```bash
 LIVRABLE : Commandes iptables
+iptables -A INPUT -p tcp --dport 22 -m state --state ESTABLISHED -s 192.168.100.0/24 -d 192.168.200.3 -j ACCEPT
+iptables -A OUTPUT -p tcp --dport 22 -m state --state NEW,ESTABLISHED -s 192.168.200.3 -d 192.168.100.0/24 -j ACCEPT
+iptables -A INPUT -p tcp --dport 22 -m state --state ESTABLISHED -s 192.168.100.0/24 -d 192.168.100.2 -j ACCEPT
+iptables -A OUTPUT -p tcp --dport 22 -m state --state NEW,ESTABLISHED -s 192.168.100.2 -d 192.168.100.0/24 -j ACCEPT
+
 ```
 
 ---
@@ -557,7 +603,7 @@ ssh root@192.168.200.3 (password : celui que vous avez configuré)
 ---
 
 **LIVRABLE : capture d'écran de votre connexion ssh.**
-
+![](C:\Users\ruifi\OneDrive\Documents\SRX\labo2\Teaching-HEIGVD-SRX-2020-Labo-Firewall\livrable_ssh1.PNG)
 ---
 
 <ol type="a" start="9">
@@ -569,7 +615,12 @@ ssh root@192.168.200.3 (password : celui que vous avez configuré)
 **Réponse**
 
 **LIVRABLE : Votre réponse ici...**
-
+Cela permet de sécuriser la communication entre le serveur et le client et ainsi compliquer l'interception des données par un tier.
+Le ssh est utilisé pour :
+	Préserver des sessions terminal
+	SSH Tunneling : utiliser un serveur ssh distant en tant que proxy
+	Secure Copy File Transfers : transfert de fichiers entre un serveur ssh distant et le système local
+	etc.
 ---
 
 <ol type="a" start="10">
@@ -582,7 +633,8 @@ ssh root@192.168.200.3 (password : celui que vous avez configuré)
 **Réponse**
 
 **LIVRABLE : Votre réponse ici...**
-
+Il faut éviter des règles trop restrictive qui nous empecheraient de faire quoi que se soit.
+Il faut aussi éviter des règles trop permissive qui laisseraient trop d'ouvertur, qui pourrait mener à des failles.
 ---
 
 ## Règles finales iptables
@@ -597,5 +649,5 @@ A présent, vous devriez avoir le matériel nécessaire afin de reproduire la ta
 ---
 
 **LIVRABLE : capture d'écran avec toutes vos règles.**
-
+![](C:\Users\ruifi\OneDrive\Documents\SRX\labo2\Teaching-HEIGVD-SRX-2020-Labo-Firewall\livrable_règles iptables.PNG)
 ---
