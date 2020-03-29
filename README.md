@@ -475,7 +475,7 @@ ping www.google.com
 ---
 
 **LIVRABLE : capture d'écran de votre ping.**
-![](C:\Users\ruifi\OneDrive\Documents\SRX\labo2\Teaching-HEIGVD-SRX-2020-Labo-Firewall\livrable_ping5.PNG)
+![](\image\livrable_ping5.PNG)
 ---
 
 * Créer et appliquer la règle adéquate pour que la **condition 1 du cahier des charges** soit respectée.
