@@ -515,8 +515,7 @@ iptables -A OUTPUT -p tcp --dport 53 -d 192.168.100.0/24 -o eth0 -j ACCEPT
 ---
 **Réponse**
 
-**LIVRABLE : Votre réponse ici...**
-Avant de sortir le premier résultat la commande ping tourne pendant un petit moment. Il cherche la machine www.google.ch sur le réseau, mais n'ayant pas de DNS à disposition pour traduire l'adresse, il ne trouve rien.
+**Avant de sortir le premier résultat la commande ping tourne pendant un petit moment. Il cherche la machine www.google.ch sur le réseau, mais n'ayant pas de DNS à disposition pour traduire l'adresse, il ne trouve rien.**
 ---
 
 
@@ -568,7 +567,7 @@ iptables -A OUTPUT -p tcp --dport 80 -m state --state NEW,ESTABLISHED -s 192.168
 
 ---
 
-**LIVRABLE : capture d'écran.**
+**LIVRABLE : capture d'écran.**   
 ![](/image/livrable_wget1.PNG)
 ---
 
@@ -615,8 +614,8 @@ ssh root@192.168.200.3 (password : celui que vous avez configuré)
 ---
 **Réponse**
 
-**LIVRABLE : Votre réponse ici...**
-Cela permet de sécuriser la communication entre le serveur et le client et ainsi compliquer l'interception des données par un tier.
+
+**Cela permet de sécuriser la communication entre le serveur et le client et ainsi compliquer l'interception des données par un tier.**
 Le ssh est utilisé pour :
 	Préserver des sessions terminal
 	SSH Tunneling : utiliser un serveur ssh distant en tant que proxy
@@ -633,7 +632,7 @@ Le ssh est utilisé pour :
 ---
 **Réponse**
 
-**LIVRABLE : Votre réponse ici...**
+****
 Il faut éviter des règles trop restrictive qui nous empecheraient de faire quoi que se soit.
 Il faut aussi éviter des règles trop permissive qui laisseraient trop d'ouvertur, qui pourrait mener à des failles.
 ---
