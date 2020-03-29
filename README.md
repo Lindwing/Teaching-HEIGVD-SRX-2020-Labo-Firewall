@@ -245,7 +245,7 @@ ping 192.168.200.3
 ---
 
 **LIVRABLE : capture d'écran de votre tentative de ping.**  
-![](C:\Users\ruifi\OneDrive\Documents\SRX\labo2\Teaching-HEIGVD-SRX-2020-Labo-Firewall\livrable_ping1.PNG)
+![](/image/livrable_ping1.PNG)
 
 ---
 
@@ -301,7 +301,7 @@ ping 192.168.100.3
 ---
 
 **LIVRABLE : capture d'écran de votre nouvelle tentative de ping.**
-![](C:\Users\ruifi\OneDrive\Documents\SRX\labo2\Teaching-HEIGVD-SRX-2020-Labo-Firewall\livrable_ping2.PNG)
+![](/image/livrable_ping2.PNG)
 ---
 
 La communication est maintenant possible entre les deux machines. Pourtant, si vous essayez de communiquer depuis le client ou le serveur vers l'Internet, ça ne devrait pas encore fonctionner sans une manipulation supplémentaire au niveau du firewall. Vous pouvez le vérifier avec un ping depuis le client ou le serveur vers une adresse Internet. 
@@ -315,7 +315,7 @@ ping 8.8.8.8
 ---
 
 **LIVRABLE : capture d'écran de votre ping vers l'Internet.**
-![](C:\Users\ruifi\OneDrive\Documents\SRX\labo2\Teaching-HEIGVD-SRX-2020-Labo-Firewall\livrable_ping3.PNG)
+![](/image/livrable_ping3.PNG)
 ---
 
 ### Configuration réseau du firewall
@@ -434,7 +434,7 @@ Faire une capture du ping.
 
 ---
 **LIVRABLE : capture d'écran de votre ping vers l'Internet.**
-![](C:\Users\ruifi\OneDrive\Documents\SRX\labo2\Teaching-HEIGVD-SRX-2020-Labo-Firewall\livrable_ping4.PNG)
+![](/image/livrable_ping4.PNG)
 ---
 
 <ol type="a" start="3">
@@ -475,7 +475,7 @@ ping www.google.com
 ---
 
 **LIVRABLE : capture d'écran de votre ping.**
-![](\image\livrable_ping5.PNG)
+![](/image/livrable_ping5.PNG)
 ---
 
 * Créer et appliquer la règle adéquate pour que la **condition 1 du cahier des charges** soit respectée.
@@ -503,7 +503,7 @@ iptables -A OUTPUT -p tcp --dport 53 -d 192.168.100.0/24 -o eth0 -j ACCEPT
 ---
 
 **LIVRABLE : capture d'écran de votre ping.**
-![](C:\Users\ruifi\OneDrive\Documents\SRX\labo2\Teaching-HEIGVD-SRX-2020-Labo-Firewall\livrable_ping6.PNG)
+![](/image/livrable_ping6.PNG)
 ---
 
 <ol type="a" start="6">
@@ -568,7 +568,7 @@ iptables -A OUTPUT -p tcp --dport 80 -m state --state NEW,ESTABLISHED -s 192.168
 ---
 
 **LIVRABLE : capture d'écran.**
-![](C:\Users\ruifi\OneDrive\Documents\SRX\labo2\Teaching-HEIGVD-SRX-2020-Labo-Firewall\livrable_wget1.PNG)
+![](/image/livrable_wget1.PNG)
 ---
 
 
@@ -603,7 +603,7 @@ ssh root@192.168.200.3 (password : celui que vous avez configuré)
 ---
 
 **LIVRABLE : capture d'écran de votre connexion ssh.**
-![](C:\Users\ruifi\OneDrive\Documents\SRX\labo2\Teaching-HEIGVD-SRX-2020-Labo-Firewall\livrable_ssh1.PNG)
+![](/image/livrable_ssh1.PNG)
 ---
 
 <ol type="a" start="9">
@@ -649,5 +649,5 @@ A présent, vous devriez avoir le matériel nécessaire afin de reproduire la ta
 ---
 
 **LIVRABLE : capture d'écran avec toutes vos règles.**
-![](C:\Users\ruifi\OneDrive\Documents\SRX\labo2\Teaching-HEIGVD-SRX-2020-Labo-Firewall\livrable_règles iptables.PNG)
+![](/image/livrable_regles_iptables.PNG)
 ---
