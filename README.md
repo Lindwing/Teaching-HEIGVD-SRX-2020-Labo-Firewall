@@ -126,30 +126,30 @@ _Lors de la définition d'une zone, spécifier l'adresse du sous-réseau IP avec
 LAN = 192.168.100.0/24
 DMZ = 192.168.200.0/24
 
-| Adresse IP source | Adresse IP destination | Type | Port src | Port dst | Action |
-| LAN               | Any                    | UDP  | :------: |   53     | ACCEPT |
-| Any               | LAN                    | UDP  |    53    |          | ACCEPT |
-| LAN               | Any                    | TCP  |    53    |          | ACCEPT |
-| Any               | LAN                    | TCP  |          |   53     | ACCEPT |
-| LAN               | DMZ                    | ICMP |          |          | ACCEPT |
-| DMZ               | LAN                    | ICMP |          |          | ACCEPT |
-| LAN               | Any                    | ICMP |          |          | ACCEPT |
-| Any               | LAN                    | ICMP |          |          | ACCEPT |
-| LAN				| Any					 | TCP  |  		   |   80	  | ACCEPT |
-| LAN				| Any					 | TCP  |  		   |   8080	  | ACCEPT |
-| Any				| LAN					 | TCP  |  	80	   |   	      | ACCEPT |
-| ANY				| LAN					 | TCP  |  	8080   |     	  | ACCEPT |
-| LAN				| Any					 | TCP  |  		   |   443	  | ACCEPT |
-| Any				| LAN					 | TCP  |  	443	   |    	  | ACCEPT |
-| DMZ				| LAN					 | TCP  |  	80	   |   	      | ACCEPT |
-| LAN				| DMZ					 | TCP  |  	       |    80	  | ACCEPT |
-| DMZ				| Any					 | TCP  |  	80	   |    	  | ACCEPT |
-| Any				| DMZ					 | TCP  |  	       |   80  	  | ACCEPT |
-| LAN				| DMZ					 | TCP  |  		   |   22     | ACCEPT |
-| DMZ				| LAN					 | TCP  |  	22     |     	  | ACCEPT |
-| 192.168.100.2		| LAN					 | TCP  |  		   |   	22    | ACCEPT |
-| LAN				| 192.168.100.2			 | TCP  |  	22     |     	  | ACCEPT |
-| Any				| Any					 | Any  |   Any    |   Any    | DROP   |
+| Adresse IP source | Adresse IP destination | Type | Port src | Port dst | Action |  
+| LAN               | Any                    | UDP  | :------: |   53     | ACCEPT |  
+| Any               | LAN                    | UDP  |    53    |          | ACCEPT |  
+| LAN               | Any                    | TCP  |    53    |          | ACCEPT |  
+| Any               | LAN                    | TCP  |          |   53     | ACCEPT |  
+| LAN               | DMZ                    | ICMP |          |          | ACCEPT |  
+| DMZ               | LAN                    | ICMP |          |          | ACCEPT |  
+| LAN               | Any                    | ICMP |          |          | ACCEPT |  
+| Any               | LAN                    | ICMP |          |          | ACCEPT |  
+| LAN				| Any					 | TCP  |  		   |   80	  | ACCEPT |  
+| LAN				| Any					 | TCP  |  		   |   8080	  | ACCEPT |  
+| Any				| LAN					 | TCP  |  	80	   |   	      | ACCEPT |  
+| ANY				| LAN					 | TCP  |  	8080   |     	  | ACCEPT |  
+| LAN				| Any					 | TCP  |  		   |   443	  | ACCEPT |  
+| Any				| LAN					 | TCP  |  	443	   |    	  | ACCEPT |  
+| DMZ				| LAN					 | TCP  |  	80	   |   	      | ACCEPT |  
+| LAN				| DMZ					 | TCP  |  	       |    80	  | ACCEPT |  
+| DMZ				| Any					 | TCP  |  	80	   |    	  | ACCEPT |  
+| Any				| DMZ					 | TCP  |  	       |   80  	  | ACCEPT |  
+| LAN				| DMZ					 | TCP  |  		   |   22     | ACCEPT |  
+| DMZ				| LAN					 | TCP  |  	22     |     	  | ACCEPT |  
+| 192.168.100.2		| LAN					 | TCP  |  		   |   	22    | ACCEPT |  
+| LAN				| 192.168.100.2			 | TCP  |  	22     |     	  | ACCEPT |  
+| Any				| Any					 | Any  |   Any    |   Any    | DROP   |  
 
 ---
 
@@ -445,18 +445,18 @@ Faire une capture du ping.
 
 | De Client\_in\_LAN à | OK/KO | Commentaires et explications |
 | :---                 | :---: | :---                         |
-| Interface DMZ du FW  |       |                              |
-| Interface LAN du FW  |       |                              |
-| Client LAN           |       |                              |
-| Serveur WAN          |       |                              |
+| Interface DMZ du FW  | OK    | On a permis les pings du Client_LAN vers DMZ|
+| Interface LAN du FW  | KO    | On a pas permis les pings sur le réseau LAN |
+| Client LAN           | OK    | Le Client_LAN n'as pas besoin de passer par le Firewall pour faire un ping sur lui-même|
+| Serveur WAN          | OK    | Les pings des Client_LAN peuvent aller sur le WEB|
 
 
 | De Server\_in\_DMZ à | OK/KO | Commentaires et explications |
 | :---                 | :---: | :---                         |
-| Interface DMZ du FW  |       |                              |
-| Interface LAN du FW  |       |                              |
-| Serveur DMZ          |       |                              |
-| Serveur WAN          |       |                              |
+| Interface DMZ du FW  | KO    | On a pas permis les pings sur le réseau DMZ|
+| Interface LAN du FW  | OK    | Les pings du Serveur_DMZ peuvent aller sur le réseau LAN|
+| Serveur DMZ          | OK    | Le Serveur_DMZ n'as pas besoin de passer par le Firewall pour faire un ping sur lui-même|
+| Serveur WAN          | KO    | Les pings du Serveur_DMZ ne peuvent pas aller sur le WEB|
 
 
 ## Règles pour le protocole DNS
